@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Swaraj Pal — SDET Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060910;--surface:#0d1220;--card:#111827;--card2:#161f31;
+  --border:#1e2d47;--border2:#253858;
+  --cyan:#00d4ff;--purple:#a855f7;--green:#22d3a0;--orange:#f97316;
+  --text:#e2e8f0;--muted:#6b7fa3;--dim:#3d4f6e;
+  --mono:'Space Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --glow:0 0 20px rgba(0,212,255,0.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;line-height:1.6}
+
+/* ── CANVAS BG ── */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.4}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 2.5rem;
+  background:rgba(6,9,16,0.8);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-id{font-family:var(--mono);font-size:0.75rem;color:var(--cyan);letter-spacing:0.12em}
+.nav-id span{color:var(--muted)}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{
+  font-size:0.75rem;font-weight:500;letter-spacing:0.1em;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;
+  transition:color 0.2s;padding:0.3rem 0;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--cyan);transform:scaleX(0);transition:transform 0.2s;
+}
+.nav-links a:hover{color:var(--cyan)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+/* ── SECTIONS ── */
+.page{position:relative;z-index:1}
+section{max-width:1080px;margin:0 auto;padding:5rem 2rem}
+.eyebrow{
+  font-family:var(--mono);font-size:0.7rem;letter-spacing:0.2em;
+  color:var(--cyan);text-transform:uppercase;margin-bottom:0.6rem;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.eyebrow::before{content:'//';color:var(--dim)}
+h2{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-0.03em;margin-bottom:3rem}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding-top:6rem;max-width:1080px;margin:0 auto;padding-left:2rem;padding-right:2rem;
+}
+
+/* terminal */
+.terminal{
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  margin-bottom:3rem;max-width:540px;overflow:hidden;
+}
+.terminal-bar{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.6rem 1rem;background:#0a1220;border-bottom:1px solid var(--border);
+}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.terminal-title{font-family:var(--mono);font-size:0.7rem;color:var(--dim);margin-left:auto}
+.terminal-body{padding:1.25rem 1.5rem;font-family:var(--mono);font-size:0.8rem;line-height:2}
+.t-prompt{color:var(--green)}
+.t-cmd{color:var(--text)}
+.t-out{color:var(--muted)}
+.t-cyan{color:var(--cyan)}
+.t-purple{color:var(--purple)}
+.cursor{display:inline-block;width:8px;height:14px;background:var(--cyan);animation:blink 1s step-end infinite;vertical-align:-2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* hero name */
+.hero-name{font-size:clamp(4rem,10vw,8rem);font-weight:700;line-height:0.95;letter-spacing:-0.04em;margin-bottom:1.5rem}
+.hero-name .first{display:block;color:var(--text)}
+.hero-name .last{display:block;color:transparent;-webkit-text-stroke:2px var(--cyan);position:relative}
+.hero-role{font-family:var(--mono);font-size:1rem;color:var(--muted);margin-bottom:2rem}
+.hero-role .hl{color:var(--cyan)}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.75rem 1.75rem;border-radius:4px;
+  font-family:var(--mono);font-size:0.78rem;letter-spacing:0.06em;
+  text-decoration:none;font-weight:700;cursor:pointer;
+  transition:all 0.2s;border:none;
+}
+.btn-cyan{background:var(--cyan);color:#000}
+.btn-cyan:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,0.3)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+
+/* ── STATS ── */
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--border);border-radius:8px;overflow:hidden;
+  max-width:1080px;margin:0 auto;position:relative;z-index:1;
+}
+.stat-cell{
+  padding:2rem 1.5rem;border-right:1px solid var(--border);
+  transition:background 0.3s;cursor:default;
+}
+.stat-cell:last-child{border-right:none}
+.stat-cell:hover{background:var(--surface)}
+.stat-n{font-family:var(--mono);font-size:2.2rem;font-weight:700;color:var(--cyan);line-height:1;margin-bottom:0.4rem}
+.stat-l{font-size:0.8rem;color:var(--muted)}
+
+/* ── EXPERIENCE ── */
+.exp-grid{display:flex;flex-direction:column;gap:0}
+
+.exp-item{
+  display:grid;grid-template-columns:200px 1fr;gap:2rem;
+  padding:2.5rem 0;border-top:1px solid var(--border);
+  position:relative;cursor:pointer;transition:background 0.2s;
+}
+.exp-item::before{
+  content:'';position:absolute;left:-2rem;top:0;bottom:0;width:2px;
+  background:transparent;transition:background 0.2s;
+}
+.exp-item:hover::before{background:var(--cyan)}
+.exp-item:hover{padding-left:0.5rem}
+
+.exp-date{font-family:var(--mono);font-size:0.72rem;color:var(--muted);line-height:1.7;padding-top:0.2rem}
+.exp-date .badge{
+  display:inline-block;margin-top:0.5rem;
+  font-size:0.65rem;padding:0.2rem 0.5rem;border-radius:2px;
+  background:rgba(34,211,160,0.12);color:var(--green);border:1px solid rgba(34,211,160,0.25);
+}
+
+.exp-body h3{font-size:1.1rem;font-weight:600;margin-bottom:0.2rem}
+.exp-co{font-family:var(--mono);font-size:0.75rem;color:var(--cyan);margin-bottom:1rem}
+
+.exp-points{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+.exp-points li{font-size:0.88rem;color:var(--muted);padding-left:1.2rem;position:relative;line-height:1.6}
+.exp-points li::before{content:'▸';position:absolute;left:0;color:var(--cyan);font-size:0.7rem;top:0.25rem}
+.exp-points li strong{color:var(--text);font-weight:500}
+
+.exp-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem}
+.exp-tag{
+  font-family:var(--mono);font-size:0.67rem;padding:0.2rem 0.55rem;border-radius:2px;
+  background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.2);
+}
+
+/* ── SKILLS ── */
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+
+.skill-group{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.75rem;transition:border-color 0.2s}
+.skill-group:hover{border-color:var(--border2)}
+.skill-group-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.15em;color:var(--cyan);text-transform:uppercase;margin-bottom:0.5rem}
+.skill-group h3{font-size:1rem;font-weight:600;margin-bottom:1.25rem;color:var(--text)}
+
+.skill-bar-wrap{display:flex;flex-direction:column;gap:0.85rem}
+.skill-row{display:flex;flex-direction:column;gap:0.35rem}
+.skill-name-row{display:flex;justify-content:space-between;align-items:center}
+.skill-name{font-size:0.82rem;color:var(--text)}
+.skill-pct{font-family:var(--mono);font-size:0.7rem;color:var(--muted)}
+.bar-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(0.23,1,0.32,1)}
+.bar-fill.cyan{background:linear-gradient(90deg,var(--cyan),#0099bb)}
+.bar-fill.purple{background:linear-gradient(90deg,var(--purple),#7c3aed)}
+.bar-fill.green{background:linear-gradient(90deg,var(--green),#059669)}
+.bar-fill.orange{background:linear-gradient(90deg,var(--orange),#dc2626)}
+
+/* ── TECH CLOUD ── */
+.tech-cloud{
+  display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1rem;
+}
+.tech-pill{
+  font-family:var(--mono);font-size:0.72rem;
+  padding:0.35rem 0.85rem;border-radius:30px;
+  border:1px solid var(--border2);color:var(--muted);
+  cursor:default;transition:all 0.2s;
+}
+.tech-pill:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,0.05)}
+
+/* ── ACHIEVEMENTS ── */
+.ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.ach-card{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:1.75rem;position:relative;overflow:hidden;transition:all 0.25s;
+}
+.ach-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.ach-card:hover{transform:translateY(-4px);border-color:var(--border2)}
+.ach-card:hover::before{opacity:1}
+.ach-icon{font-size:1.75rem;margin-bottom:1rem}
+.ach-card h3{font-size:0.95rem;font-weight:600;margin-bottom:0.35rem}
+.ach-card p{font-size:0.82rem;color:var(--muted)}
+.ach-date{font-family:var(--mono);font-size:0.68rem;color:var(--cyan);margin-top:0.75rem}
+
+/* ── CONTACT ── */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.contact-card{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:1.5rem 2rem;display:flex;align-items:center;gap:1.25rem;
+  text-decoration:none;color:var(--text);transition:all 0.2s;
+}
+.contact-card:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:var(--glow)}
+.contact-card svg{width:20px;height:20px;flex-shrink:0;stroke:var(--cyan)}
+.contact-label{font-family:var(--mono);font-size:0.7rem;color:var(--muted);margin-bottom:0.2rem}
+.contact-val{font-size:0.9rem;font-weight:500}
+
+.open-to{margin-top:2.5rem}
+.open-to p{font-family:var(--mono);font-size:0.72rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
+.locs{display:flex;flex-wrap:wrap;gap:0.5rem}
+.loc{
+  font-family:var(--mono);font-size:0.72rem;padding:0.3rem 0.8rem;
+  border-radius:30px;border:1px solid var(--border2);color:var(--muted);
+  transition:all 0.2s;
+}
+.loc:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);text-align:center;
+  padding:2rem;font-family:var(--mono);font-size:0.7rem;color:var(--dim);
+  position:relative;z-index:1;
+}
+
+/* ── SCROLL REVEALS ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+/* ── ACTIVE NAV ── */
+.nav-links a.active{color:var(--cyan)}
+.nav-links a.active::after{transform:scaleX(1)}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.25rem}
+  .nav-links{gap:0.75rem}
+  section{padding:4rem 1.25rem}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(3){border-top:1px solid var(--border);border-right:1px solid var(--border)}
+  .exp-item{grid-template-columns:1fr;gap:0.5rem}
+  .skills-layout{grid-template-columns:1fr}
+  .ach-grid{grid-template-columns:1fr}
+  .contact-layout{grid-template-columns:1fr}
+  .hero-name{font-size:clamp(3rem,12vw,5rem)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <div class="nav-id"><span>~/</span>swaraj-pal<span>.dev</span></div>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#experience">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#achievements">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="terminal reveal">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+      <div class="terminal-title">swaraj@accenture:~</div>
+    </div>
+    <div class="terminal-body" id="terminal-output"></div>
+  </div>
+
+  <div class="hero-name reveal reveal-delay-1">
+    <span class="first">Swaraj</span>
+    <span class="last">Pal.</span>
+  </div>
+  <div class="hero-role reveal reveal-delay-2">
+    <span class="hl">SDET</span> &amp; QA Automation Engineer
+    &nbsp;·&nbsp; <span class="hl">4.5 yrs</span> @ Accenture
+    &nbsp;·&nbsp; Kolkata, India
+  </div>
+  <div class="hero-btns reveal reveal-delay-3">
+    <a href="mailto:palswaraj1999@gmail.com" class="btn btn-cyan">Get in Touch →</a>
+    <a href="https://linkedin.com/in/swaraj1999" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div class="stats-row reveal">
+  <div class="stat-cell">
+    <div class="stat-n" data-count="4.5" data-suffix="+">0</div>
+    <div class="stat-l">Years at Accenture</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n" data-count="40" data-prefix="" data-suffix="%" data-is-range="35-40">35-40%</div>
+    <div class="stat-l">Test design effort cut with AI</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n" data-count="500" data-suffix="+">0</div>
+    <div class="stat-l">Test cases designed</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n" data-count="3" data-suffix="+">0</div>
+    <div class="stat-l">Engineers mentored</div>
+  </div>
+</div>
+
+<!-- ══ EXPERIENCE ══ -->
+<section id="experience">
+  <div class="eyebrow">Career</div>
+  <h2 class="reveal">Experience</h2>
+
+  <div class="exp-grid">
+    <div class="exp-item reveal">
+      <div class="exp-date">
+        Dec 2022 – Present<br/>Kolkata · Hybrid<br/>
+        <div class="badge">● Current</div>
+      </div>
+      <div class="exp-body">
+        <h3>QA Automation Engineer / SDET</h3>
+        <div class="exp-co">Accenture</div>
+        <ul class="exp-points">
+          <li>Build and maintain <strong>end-to-end regression automation</strong> scripts with Python and Selenium WebDriver.</li>
+          <li>Generate test cases from BRDs using <strong>Claude AI & GitHub Copilot</strong>, cutting test design effort by 30–40%.</li>
+          <li>Lead <strong>Sanity Testing team</strong> — daily validation cycles, test ownership, and quality gate sign-offs before every production deployment.</li>
+          <li>Maintain version-controlled automation codebases via <strong>Git</strong> for collaborative development and rollback.</li>
+          <li>Integrate automated suites into <strong>Azure DevOps CI/CD pipelines</strong> for continuous testing on every deploy.</li>
+          <li>Conduct functional and regression test execution; triage defects with developers.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Python</span><span class="exp-tag">Selenium</span>
+          <span class="exp-tag">Claude AI</span><span class="exp-tag">Azure DevOps</span>
+          <span class="exp-tag">Git</span><span class="exp-tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Nov 2021 – Dec 2022<br/>Remote</div>
+      <div class="exp-body">
+        <h3>Application Development Associate</h3>
+        <div class="exp-co">Accenture</div>
+        <ul class="exp-points">
+          <li>Designed and executed <strong>500+ manual test cases</strong> for functional, regression, and sanity testing on Siebel-based enterprise apps.</li>
+          <li>Established a dedicated sanity testing team, reducing production bug escapes and improving post-deployment stability.</li>
+          <li>Mentored <strong>3+ new joiners</strong> on defect lifecycle management, test case writing, and Siebel workflows.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Siebel CRM</span><span class="exp-tag">Manual Testing</span>
+          <span class="exp-tag">Defect Management</span><span class="exp-tag">Mentorship</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SKILLS ══ -->
+<section id="skills">
+  <div class="eyebrow">Toolkit</div>
+  <h2 class="reveal">Technical Skills</h2>
+
+  <div class="skills-layout">
+    <div class="skill-group reveal">
+      <div class="skill-group-label">Automation</div>
+      <h3>Test Automation</h3>
+      <div class="skill-bar-wrap">
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Python + Selenium</span><span class="skill-pct">95%</span></div><div class="bar-track"><div class="bar-fill cyan" data-w="0.95"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Java / TestNG</span><span class="skill-pct">80%</span></div><div class="bar-track"><div class="bar-fill cyan" data-w="0.80"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Page Object Model</span><span class="skill-pct">90%</span></div><div class="bar-track"><div class="bar-fill cyan" data-w="0.90"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Pytest</span><span class="skill-pct">85%</span></div><div class="bar-track"><div class="bar-fill cyan" data-w="0.85"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-delay-1">
+      <div class="skill-group-label">API & DevOps</div>
+      <h3>API Testing & CI/CD</h3>
+      <div class="skill-bar-wrap">
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">REST Assured / Postman</span><span class="skill-pct">82%</span></div><div class="bar-track"><div class="bar-fill green" data-w="0.82"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Azure DevOps</span><span class="skill-pct">88%</span></div><div class="bar-track"><div class="bar-fill green" data-w="0.88"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Git / GitHub</span><span class="skill-pct">90%</span></div><div class="bar-track"><div class="bar-fill green" data-w="0.90"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">CI/CD Pipelines</span><span class="skill-pct">78%</span></div><div class="bar-track"><div class="bar-fill green" data-w="0.78"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-delay-2">
+      <div class="skill-group-label">AI Tools</div>
+      <h3>AI-Assisted Development</h3>
+      <div class="skill-bar-wrap">
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Claude AI</span><span class="skill-pct">92%</span></div><div class="bar-track"><div class="bar-fill purple" data-w="0.92"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">GitHub Copilot</span><span class="skill-pct">88%</span></div><div class="bar-track"><div class="bar-fill purple" data-w="0.88"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Agentic AI</span><span class="skill-pct">75%</span></div><div class="bar-track"><div class="bar-fill purple" data-w="0.75"></div></div></div>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-delay-3">
+      <div class="skill-group-label">Other</div>
+      <h3>General Skills</h3>
+      <div class="skill-bar-wrap">
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">SQL</span><span class="skill-pct">75%</span></div><div class="bar-track"><div class="bar-fill orange" data-w="0.75"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">SDLC / STLC</span><span class="skill-pct">90%</span></div><div class="bar-track"><div class="bar-fill orange" data-w="0.90"></div></div></div>
+        <div class="skill-row"><div class="skill-name-row"><span class="skill-name">Team Leadership</span><span class="skill-pct">85%</span></div><div class="bar-track"><div class="bar-fill orange" data-w="0.85"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech cloud -->
+  <div class="reveal" style="margin-top:3rem">
+    <p style="font-family:var(--mono);font-size:0.7rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">All technologies</p>
+    <div class="tech-cloud">
+      <span class="tech-pill">Python</span><span class="tech-pill">Java</span>
+      <span class="tech-pill">Selenium WebDriver</span><span class="tech-pill">TestNG</span>
+      <span class="tech-pill">Pytest</span><span class="tech-pill">Page Object Model</span>
+      <span class="tech-pill">REST Assured</span><span class="tech-pill">Postman</span>
+      <span class="tech-pill">Claude AI</span><span class="tech-pill">GitHub Copilot</span>
+      <span class="tech-pill">Azure DevOps</span><span class="tech-pill">Git</span>
+      <span class="tech-pill">GitHub</span><span class="tech-pill">CI/CD</span>
+      <span class="tech-pill">SQL</span><span class="tech-pill">SDLC</span>
+      <span class="tech-pill">STLC</span><span class="tech-pill">Defect Management</span>
+      <span class="tech-pill">Siebel CRM</span><span class="tech-pill">Agentic AI</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ACHIEVEMENTS ══ -->
+<section id="achievements">
+  <div class="eyebrow">Recognition</div>
+  <h2 class="reveal">Certifications & Achievements</h2>
+
+  <div class="ach-grid">
+    <div class="ach-card reveal">
+      <div class="ach-icon">🤖</div>
+      <h3>Reinvention with Agentic AI</h3>
+      <p>Certified in agentic AI workflows and integration — enabling next-gen automation approaches.</p>
+      <div class="ach-date">Accenture · Nov 2025</div>
+    </div>
+    <div class="ach-card reveal reveal-delay-1">
+      <div class="ach-icon">🐍</div>
+      <h3>Joy of Computing Using Python</h3>
+      <p>NPTEL certification in Python programming fundamentals and computational thinking.</p>
+      <div class="ach-date">NPTEL · Jul 2019</div>
+    </div>
+    <div class="ach-card reveal reveal-delay-2">
+      <div class="ach-icon">⭐</div>
+      <h3>Fast-Track Promotion</h3>
+      <p>Promoted from Application Development Associate to Quality Engineer Analyst in just 14 months.</p>
+      <div class="ach-date">Accenture · 2022</div>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="reveal" style="margin-top:2rem;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:0 8px 8px 0;padding:1.75rem 2rem">
+    <div style="font-family:var(--mono);font-size:0.68rem;color:var(--cyan);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Education</div>
+    <h3 style="font-size:1.05rem;font-weight:600;margin-bottom:0.25rem">B.Tech — Computer Science & Engineering</h3>
+    <p style="font-size:0.85rem;color:var(--muted)">Ramkrishna Mahato Government Engineering College, Purulia &nbsp;·&nbsp; MAKAUT &nbsp;·&nbsp; 2017–2021</p>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="eyebrow">Let's connect</div>
+  <h2 class="reveal">Contact</h2>
+  <p class="reveal" style="color:var(--muted);margin-bottom:2rem;max-width:480px">Open to SDET and QA Automation opportunities. Available across India and internationally.</p>
+
+  <div class="contact-layout reveal">
+    <a href="mailto:palswaraj1999@gmail.com" class="contact-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      <div><div class="contact-label">Email</div><div class="contact-val">palswaraj1999@gmail.com</div></div>
+    </a>
+    <a href="tel:9477108531" class="contact-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 3.18 2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      <div><div class="contact-label">Phone</div><div class="contact-val">+91 94771 08531</div></div>
+    </a>
+    <a href="https://linkedin.com/in/swaraj1999" target="_blank" class="contact-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      <div><div class="contact-label">LinkedIn</div><div class="contact-val">linkedin.com/in/swaraj1999</div></div>
+    </a>
+  </div>
+
+  <div class="open-to reveal" style="margin-top:2.5rem">
+    <p>Open to opportunities in</p>
+    <div class="locs">
+      <span class="loc">📍 Kolkata</span>
+      <span class="loc">📍 Bangalore</span>
+      <span class="loc">📍 Hyderabad</span>
+      <span class="loc">📍 Pune</span>
+      <span class="loc">📍 Delhi NCR</span>
+      <span class="loc">📍 Dubai</span>
+      <span class="loc">📍 Singapore</span>
+      <span class="loc">🌐 Remote</span>
+    </div>
+  </div>
+</section>
+
+</div><!-- .page -->
+
+<footer>
+  <p>© 2025 Swaraj Pal &nbsp;·&nbsp; SDET & QA Automation Engineer &nbsp;·&nbsp; Built from CV</p>
+</footer>
+
+<script>
+/* ── PARTICLE CANVAS ── */
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function mkParticle(){
+  return{
+    x:Math.random()*W,y:Math.random()*H,
+    vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,
+    r:Math.random()*1.5+0.5,
+    alpha:Math.random()*0.5+0.1,
+    color:Math.random()<0.6?'0,212,255':'168,85,247'
+  }
+}
+for(let i=0;i<80;i++)particles.push(mkParticle());
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.color},${p.alpha})`;ctx.fill();
+  });
+  // draw connecting lines
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.strokeStyle=`rgba(0,212,255,${0.06*(1-d/120)})`;
+        ctx.lineWidth=0.5;ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ── TERMINAL TYPER ── */
+const lines=[
+  {type:'prompt',cmd:'whoami'},
+  {type:'out',text:'<span class="t-cyan">swaraj_pal</span> &nbsp;·&nbsp; <span class="t-purple">SDET @ Accenture</span>'},
+  {type:'prompt',cmd:'cat skills.txt'},
+  {type:'out',text:'Python · Selenium · Claude AI · Azure DevOps · Java'},
+  {type:'prompt',cmd:'echo $STATUS'},
+  {type:'out',text:'<span class="t-cyan">🟢 Open to opportunities</span>'},
+  {type:'prompt',cmd:'_'},
+];
+const termOut=document.getElementById('terminal-output');
+let li=0,ci=0;
+function typeLine(){
+  if(li>=lines.length-1){
+    termOut.innerHTML+=`<div><span class="t-prompt">❯</span> <span class="t-cmd"><span class="cursor"></span></span></div>`;
+    return;
+  }
+  const l=lines[li];
+  if(l.type==='prompt'){
+    const div=document.createElement('div');
+    div.innerHTML=`<span class="t-prompt">❯</span> <span class="t-cmd"></span>`;
+    termOut.appendChild(div);
+    const cmd=div.querySelector('.t-cmd');
+    let c=0;
+    const t=setInterval(()=>{
+      if(c<l.cmd.length){cmd.textContent+=l.cmd[c++]}
+      else{clearInterval(t);li++;setTimeout(typeLine,200)}
+    },60);
+  } else {
+    const div=document.createElement('div');
+    div.innerHTML=`<span class="t-out">${l.text}</span>`;
+    termOut.appendChild(div);
+    li++;setTimeout(typeLine,250);
+  }
+}
+setTimeout(typeLine,800);
+
+/* ── SCROLL REVEALS ── */
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in')}});
+},{threshold:0.08});
+reveals.forEach(el=>io.observe(el));
+
+/* ── SKILL BAR ANIMATION ── */
+const bars=document.querySelectorAll('.bar-fill');
+const barIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.transform=`scaleX(${e.target.dataset.w})`;
+    }
+  });
+},{threshold:0.3});
+bars.forEach(b=>barIO.observe(b));
+
+/* ── COUNTER ANIMATION ── */
+function animCount(el){
+  const raw=el.dataset.count;
+  const suffix=el.dataset.suffix||'';
+  const isRange=el.dataset.isRange;
+  if(isRange){el.textContent=isRange;return}
+  const val=parseFloat(raw);
+  const isFloat=raw.includes('.');
+  let start=0;
+  const dur=1200,fps=60,steps=dur/(1000/fps);
+  const inc=val/steps;
+  let cur=0;
+  const t=setInterval(()=>{
+    cur=Math.min(cur+inc,val);
+    el.textContent=(isFloat?cur.toFixed(1):Math.round(cur))+suffix;
+    if(cur>=val)clearInterval(t);
+  },1000/fps);
+}
+const statIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){animCount(e.target);statIO.unobserve(e.target)}
+  });
+},{threshold:0.5});
+document.querySelectorAll('.stat-n[data-count]').forEach(el=>statIO.observe(el));
+
+/* ── ACTIVE NAV ── */
+const sections=document.querySelectorAll('section[id],.stats-row');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{
+    if(window.scrollY>=s.offsetTop-200)cur=s.id||'hero';
+  });
+  navLinks.forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
+  });
+},{passive:true});
+</script>
+</body>
+</html>
